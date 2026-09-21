@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nike - Just Do It</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #f5f5f5;
+            --nike-volt: #c6ff00;
+            --dark-card: #141414;
+            --inter-blue: #0018a8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--nike-volt);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .menu {
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .menu::after, .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+
+        .menu:hover::after, .logo:hover::after {
+            width: 100%;
+        }
+
+        /* Background Noise & Glow */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            opacity: 0.05;
+            z-index: 90;
+            pointer-events: none;
+        }
+
+        .mouse-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(198, 255, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        /* 1. Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero:hover ~ .mouse-glow {
+            opacity: 1;
+        }
+
+        .hero-text-container {
+            display: flex;
+            gap: 2vw;
+            position: absolute;
+            z-index: 2;
+        }
+
+        .hero-text {
+            font-family: 'Anton', sans-serif;
+            font-size: 18vw;
+            line-height: 0.8;
+            text-transform: uppercase;
+            color: var(--white);
+            white-space: nowrap;
+        }
+
+        .hero-text span {
+            color: var(--nike-volt);
+        }
+
+        .shoe-wrapper {
+            position: absolute;
+            z-index: 3;
+            width: 50vw;
+            max-width: 800px;
+            pointer-events: none;
+        }
+
+        .shoe-img {
+            width: 100%;
+            transform: rotate(-20deg);
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.9));
+        }
+
+        /* 2. Details Section */
+        .details {
+            height: 100vh;
+            width: 100%;
+            background-color: var(--white);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10vw;
+            position: relative;
+            z-index: 2;
+        }
+
+        .details-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+        }
+
+        .details h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 8vw;
+            line-height: 0.9;
+        }
+
+        .details p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .buy-btn {
+            padding: 1.5rem 3rem;
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Anton', sans-serif;
+            font-size: 1.5rem;
+            border: none;
+            align-self: flex-start;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--nike-volt);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .buy-btn:hover {
+            color: var(--black);
+        }
+        
+        .buy-btn:hover::before {
+            left: 0;
+        }
+
+        /* 3. Horizontal Lineup Section */
+        .horizontal-wrapper {
+            overflow: hidden;
+            background-color: var(--black);
+            z-index: 2;
+            position: relative;
+        }
+
+        .horizontal-container {
+            display: flex;
+            width: 300vw;
+            height: 100vh;
+        }
+
+        .panel {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .panel h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 15vw;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
+            position: absolute;
+            z-index: 1;
+            white-space: nowrap;
+            transition: -webkit-text-stroke 0.3s ease;
+        }
+
+        .panel:hover h2 {
+            -webkit-text-stroke: 2px var(--nike-volt);
+        }
+
+        .panel-img {
+            width: 40vw;
+            max-width: 600px;
+            z-index: 2;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .panel:hover .panel-img {
+            transform: scale(1.1) rotate(-8deg);
+        }
+
+        /* 4. Parallax Grid Section */
+        .parallax-section {
+            height: 150vh;
+            background-color: var(--nike-volt);
+            color: var(--black);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .parallax-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 12vw;
+            text-align: center;
+            line-height: 0.85;
+            z-index: 10;
+            mix-blend-mode: exclusion;
+            color: var(--white);
+        }
+
+        .p-img {
+            position: absolute;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            box-shadow: 0 30px 40px rgba(0,0,0,0.4);
+            border-radius: 8px;
+        }
+
+        .p-img-1 { top: -10%; left: 5%; width: 320px; height: 420px; }
+        .p-img-2 { top: 35%; right: 6%; width: 420px; height: 520px; }
+        .p-img-3 { bottom: -20%; left: 22%; width: 360px; height: 360px; }
+
+        /* 5. Tech Specs & Counters */
+        .specs-section {
+            min-height: 100vh;
+            background: var(--black);
+            padding: 8rem 5vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4rem;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .specs-header h3 {
+            font-family: 'Anton', sans-serif;
+            font-size: 6vw;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        .spec-card {
+            background: var(--dark-card);
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        .spec-card:hover {
+            border-color: var(--nike-volt);
+            transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+        }
+
+        .spec-num {
+            font-family: 'Anton', sans-serif;
+            font-size: 4.5rem;
+            color: var(--nike-volt);
+            line-height: 1;
+        }
+
+        .spec-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 6. Infinite Marquee & Stack */
+        .marquee-section {
+            background: var(--nike-volt);
+            color: var(--black);
+            padding: 2rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            z-index: 2;
+            position: relative;
+            transform: rotate(-1.5deg) scale(1.02);
+            margin: 4rem 0;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 3rem;
+            animation: marquee 15s linear infinite;
+        }
+
+        .marquee-item {
+            font-family: 'Anton', sans-serif;
+            font-size: 4vw;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .stack-section {
+            min-height: 120vh;
+            padding: 5vh 5vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stack-card {
+            width: 80vw;
+            max-width: 1000px;
+            height: 60vh;
+            background-color: #1a1a1a;
+            border-radius: 20px;
+            margin-bottom: -30vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4rem;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 20vh;
+        }
+
+        .stack-card:nth-child(1) { background: #121212; }
+        .stack-card:nth-child(2) { background: #1a1a1a; }
+        .stack-card:nth-child(3) { background: #242424; }
+
+        .stack-info h4 {
+            font-family: 'Anton', sans-serif;
+            font-size: 4vw;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .stack-info p {
+            max-width: 400px;
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+        }
+
+        .stack-img {
+            width: 350px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        /* KINETIC SCROLL TEXT */
+        .kinetic-section {
+            padding: 10vh 0;
+            background: var(--white);
+            color: var(--black);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .kinetic-row {
+            font-family: 'Anton', sans-serif;
+            font-size: 12vw;
+            white-space: nowrap;
+            line-height: 0.9;
+            text-transform: uppercase;
+            width: 200vw;
+        }
+        
+        .kinetic-row span {
+            color: transparent;
+            -webkit-text-stroke: 2px var(--black);
+        }
+
+        .kinetic-row.right-move span {
+            color: var(--nike-volt);
+            -webkit-text-stroke: 0px;
+        }
+
+        /* NEW SPICE: HORIZONTAL ACCORDION */
+        .accordion-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            z-index: 2;
+            position: relative;
+            background: var(--black);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .accordion-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .acc-panel {
+            flex: 1;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
+            filter: grayscale(100%) brightness(0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .acc-panel:hover {
+            flex: 3;
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .acc-text {
+            font-family: 'Anton', sans-serif;
+            font-size: 5vw;
+            color: var(--white);
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+            pointer-events: none;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.8);
+        }
+
+        .acc-panel:hover .acc-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* SPLIT SCREEN LAB */
+        .split-section {
+            display: flex;
+            width: 100%;
+            background-color: var(--black); 
+            color: var(--white);
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .split-left {
+            width: 50%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5vw;
+        }
+
+        .split-left h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 7vw;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--nike-volt);
+        }
+
+        .split-left p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            max-width: 450px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .split-right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .split-img {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .split-img:hover {
+            filter: grayscale(0%);
+        }
+
+        /* =========================================
+           NEW SLIDE 1: FLOATING PARALLAX SNEAKERS
+           ========================================= */
+        .floating-section {
+            height: 150vh;
+            background: var(--black);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .floating-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 18vw;
+            line-height: 0.8;
+            text-align: center;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.08);
+            position: absolute;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .float-img {
+            position: absolute;
+            z-index: 2;
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.9));
+            mix-blend-mode: lighten;
+        }
+
+        .f-img-1 { top: 20%; left: -5%; width: 50vw; max-width: 700px; transform: rotate(-25deg); }
+        .f-img-2 { top: 60%; right: 5%; width: 40vw; max-width: 600px; transform: rotate(15deg); }
+        .f-img-3 { bottom: -10%; left: 30%; width: 35vw; max-width: 500px; transform: rotate(-10deg); }
+
+        /* =========================================
+           NEW SLIDE 2: HYPNOTIC SPIN SHOWCASE
+           ========================================= */
+        .circle-section {
+            height: 100vh;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .circle-text-wrapper {
+            position: absolute;
+            width: 150vw;
+            height: 150vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spinBg 30s linear infinite;
+        }
+
+        .circle-text-inner {
+            font-family: 'Anton', sans-serif;
+            font-size: 15vw;
+            color: transparent;
+            -webkit-text-stroke: 3px var(--black);
+            text-align: center;
+            line-height: 0.9;
+            text-transform: uppercase;
+        }
+
+        .circle-center-shoe {
+            width: 50vw;
+            max-width: 800px;
+            z-index: 5;
+            filter: drop-shadow(0 40px 50px rgba(0,0,0,0.6));
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .circle-section:hover .circle-center-shoe {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @keyframes spinBg {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* =========================================
+           NEW SLIDE 3: INFINITE TEXT MASK REVEAL
+           ========================================= */
+        .mask-section {
+            height: 200vh; 
+            background: var(--black);
+            position: relative;
+            z-index: 2;
+        }
+
+        .mask-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--black);
+            overflow: hidden;
+        }
+
+        .mask-text-wrapper {
+            font-family: 'Anton', sans-serif;
+            font-size: 25vw;
+            line-height: 1;
+            background: url('https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+            transform-origin: center center;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+
+        /* CYBER GLITCH TEXT */
+        .glitch-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--black);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .glitch {
+            font-family: 'Anton', sans-serif;
+            font-size: 15vw;
+            color: var(--white);
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+        }
+
+        .glitch::before {
+            left: 4px;
+            text-shadow: -2px 0 red;
+            clip: rect(44px, 900px, 56px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -4px;
+            text-shadow: -2px 0 blue;
+            clip: rect(44px, 900px, 56px, 0);
+            animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(21px, 9999px, 86px, 0); }
+            5% { clip: rect(6px, 9999px, 5px, 0); }
+            10% { clip: rect(83px, 9999px, 10px, 0); }
+            15% { clip: rect(31px, 9999px, 73px, 0); }
+            20% { clip: rect(51px, 9999px, 60px, 0); }
+            25% { clip: rect(98px, 9999px, 62px, 0); }
+            30% { clip: rect(100px, 9999px, 52px, 0); }
+            35% { clip: rect(59px, 9999px, 3px, 0); }
+            40% { clip: rect(80px, 9999px, 68px, 0); }
+            45% { clip: rect(29px, 9999px, 99px, 0); }
+            50% { clip: rect(56px, 9999px, 20px, 0); }
+            55% { clip: rect(44px, 9999px, 83px, 0); }
+            60% { clip: rect(5px, 9999px, 19px, 0); }
+            65% { clip: rect(72px, 9999px, 12px, 0); }
+            70% { clip: rect(31px, 9999px, 71px, 0); }
+            75% { clip: rect(87px, 9999px, 4px, 0); }
+            80% { clip: rect(69px, 9999px, 98px, 0); }
+            85% { clip: rect(12px, 9999px, 41px, 0); }
+            90% { clip: rect(33px, 9999px, 67px, 0); }
+            95% { clip: rect(50px, 9999px, 86px, 0); }
+            100% { clip: rect(23px, 9999px, 2px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(1px, 9999px, 34px, 0); }
+            35% { clip: rect(13px, 9999px, 81px, 0); }
+            40% { clip: rect(37px, 9999px, 41px, 0); }
+            45% { clip: rect(60px, 9999px, 42px, 0); }
+            50% { clip: rect(60px, 9999px, 16px, 0); }
+            55% { clip: rect(98px, 9999px, 87px, 0); }
+            60% { clip: rect(14px, 9999px, 51px, 0); }
+            65% { clip: rect(25px, 9999px, 55px, 0); }
+            70% { clip: rect(94px, 9999px, 40px, 0); }
+            75% { clip: rect(61px, 9999px, 90px, 0); }
+            80% { clip: rect(28px, 9999px, 20px, 0); }
+            85% { clip: rect(12px, 9999px, 87px, 0); }
+            90% { clip: rect(3px, 9999px, 86px, 0); }
+            95% { clip: rect(9px, 9999px, 5px, 0); }
+            100% { clip: rect(8px, 9999px, 91px, 0); }
+        }
+
+        /* INFINITE TEXT ZOOM */
+        .scale-section {
+            height: 300vh;
+            background-color: var(--nike-volt);
+            position: relative;
+            z-index: 2;
+        }
+
+        .scale-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .scale-text {
+            font-family: 'Anton', sans-serif;
+            font-size: 15vw;
+            color: var(--black);
+            white-space: nowrap;
+            text-transform: uppercase;
+            transform-origin: center center;
+        }
+
+        /* Footer & Credit */
+        .footer {
+            height: 100vh;
+            background-color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .fill-text-container {
+            font-family: 'Anton', sans-serif;
+            font-size: 14vw;
+            text-transform: uppercase;
+            position: relative;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .fill-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: var(--nike-volt);
+            -webkit-text-stroke: 0px;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0%;
+            border-right: 5px solid var(--white);
+        }
+
+        .tiny-credit {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Inter', sans-serif;
+            z-index: 10;
+        }
+
+        /* OVERLAYS (MENU & CATEGORY) - UNTOUCHED */
+        
+        .spicy-menu-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: var(--black);
+            z-index: 1000;
+            display: flex;
+            transform: translateY(-100%);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
+        }
+
+        .spicy-menu-overlay.active {
+            transform: translateY(0);
+        }
+
+        .menu-preview {
+            position: absolute;
+            top: 0; right: 0;
+            width: 50vw; height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80');
+            opacity: 0.3;
+            transition: background-image 0.5s ease, opacity 0.5s ease;
+            z-index: 0;
+            mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+        }
+
+        .menu-links-container {
+            width: 100%;
+            padding-left: 10vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+            z-index: 1;
+        }
+
+        .spicy-link {
+            font-family: 'Anton', sans-serif;
+            font-size: 8vw;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.2);
+            text-decoration: none;
+            text-transform: uppercase;
+            line-height: 0.9;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            transition: all 0.4s ease;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            width: fit-content;
+        }
+
+        .spicy-link .link-text {
+            display: inline-block;
+            transform: translateY(100%); 
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .spicy-link:hover {
+            -webkit-text-stroke: 0px;
+            color: var(--white);
+            transform: translateX(20px);
+        }
+
+        .spicy-link:hover ~ .menu-preview {
+            opacity: 0.8;
+        }
+
+        .menu-close-btn, .info-close-btn {
+            position: absolute;
+            top: 2rem; right: 4rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--white);
+            z-index: 2;
+            mix-blend-mode: difference;
+        }
+        
+        .menu-close-btn:hover, .info-close-btn:hover { color: var(--nike-volt); }
+
+        .category-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #050505 30%, #111 100%);
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-overlay.active {
+            transform: translateX(0);
+        }
+
+        .cat-bg-title {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Anton', sans-serif;
+            font-size: 25vw;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.03);
+            white-space: nowrap;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cat-header {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .cat-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 3rem;
+            color: var(--nike-volt);
+            letter-spacing: 2px;
+        }
+
+        .cat-back {
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .cat-back:hover { color: var(--nike-volt); }
+
+        .cat-gallery {
+            flex-grow: 1;
+            display: flex;
+            gap: 3rem;
+            padding: 0 4rem 4rem 4rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            align-items: center;
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+            z-index: 2;
+        }
+        
+        .cat-gallery::-webkit-scrollbar { display: none; }
+
+        .cat-item {
+            min-width: 450px;
+            height: 65vh;
+            background: var(--black);
+            border-radius: 0px;
+            border: 1px solid rgba(255,255,255,0.1);
+            scroll-snap-align: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .cat-item:hover { border-color: var(--white); }
+
+        .cat-item img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            transition: opacity 0.4s ease, transform 0.8s ease, filter 0.4s ease;
+            z-index: 0;
+        }
+
+        .cat-item:hover img {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .cat-item-content {
+            z-index: 2;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .cat-item:hover .cat-item-content {
+            transform: translateY(0);
+        }
+
+        .cat-item h3 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3.5rem;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.8);
+        }
+
+        .cat-item p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ABOUT NIKE OVERLAY */
+        .nike-info-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, var(--nike-volt) 0%, #a4d300 100%);
+            z-index: 1005; /* Always on top */
+            transform: translateY(-100%);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .nike-info-overlay.active {
+            transform: translateY(0);
+        }
+
+        .info-bg-title {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Anton', sans-serif;
+            font-size: 35vw;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(0,0,0,0.05);
+            white-space: nowrap;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .info-content {
+            z-index: 1;
+            max-width: 800px;
+            padding: 4rem;
+            color: var(--black);
+            text-align: center;
+        }
+
+        .info-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 6vw;
+            line-height: 1;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        .info-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.6;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        .info-close-btn { color: var(--black); mix-blend-mode: normal; }
+        .info-close-btn:hover { color: var(--white); }
+
+    </style>
+</head>
+<body>
+
+    <div class="cursor"></div>
+    <div class="mouse-glow"></div>
+    <div class="bg-noise"></div>
+
+    <nav>
+        <div class="logo">NIKE</div>
+        <div class="menu">Menu</div>
+    </nav>
+
+    <!-- ABOUT NIKE OVERLAY -->
+    <div class="nike-info-overlay">
+        <div class="info-bg-title">1971</div>
+        <div class="info-close-btn">CLOSE [X]</div>
+        <div class="info-content">
+            <h2 class="info-title">OUR MISSION</h2>
+            <p class="info-desc">
+                "To bring inspiration and innovation to every athlete* in the world."<br><br>
+                *If you have a body, you are an athlete.<br><br>
+                Founded in 1964 as Blue Ribbon Sports by Bill Bowerman and Phil Knight, Nike officially became Nike, Inc. in 1971. Engineered for the fearless, designed for the future.
+            </p>
+        </div>
+    </div>
+
+    <!-- ULTRA MENU OVERLAY -->
+    <div class="spicy-menu-overlay">
+        <div class="menu-preview" id="menuPreview"></div>
+        <div class="menu-close-btn">CLOSE [X]</div>
+        <div class="menu-links-container">
+            <a href="#" class="spicy-link" data-target="home" data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80">
+                <span class="link-text">HOME</span>
+            </a>
+            <a href="#" class="spicy-link" data-target="inter" data-img="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1000&q=80">
+                <span class="link-text">INTER MILAN 26/27</span>
+            </a>
+            <a href="#" class="spicy-link" data-target="footwear" data-img="https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=1000&q=80">
+                <span class="link-text">FOOTWEAR</span>
+            </a>
+            <a href="#" class="spicy-link" data-target="innovation" data-img="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=80">
+                <span class="link-text">INNOVATION</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- DYNAMIC CATEGORY OVERLAY -->
+    <div class="category-overlay">
+        <div class="cat-bg-title" id="catBgTitle">NIKE</div>
+        <div class="cat-header">
+            <div class="cat-title" id="catTitle">CATEGORY</div>
+            <div class="cat-back">BACK TO MENU</div>
+        </div>
+        <div class="cat-gallery" id="catGallery">
+            <!-- JavaScript will inject cards here dynamically -->
+        </div>
+    </div>
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- ORIGINAL PAGE CONTENT -->
+            <section class="hero">
+                <div class="hero-text-container">
+                    <h1 class="hero-text left-text">JUST</h1>
+                    <h1 class="hero-text right-text">DO <span>IT</span></h1>
+                </div>
+                <div class="shoe-wrapper">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Nike Shoe" class="shoe-img" style="mix-blend-mode: lighten; transform: rotate(0deg);">
+                </div>
+            </section>
+
+            <section class="details">
+                <div class="details-content">
+                    <h2 class="reveal-up">ENGINEERED FOR <br>THE FEARLESS.</h2>
+                    <p class="reveal-up">Push past your limits. The new Air Max collection redefines bounce, speed, and absolute control. Designed with an ultra-lightweight mesh and revolutionary responsive cushioning.</p>
+                    <button class="buy-btn reveal-up" style="z-index: 1;">Shop Now</button>
+                </div>
+            </section>
+
+            <section class="horizontal-wrapper">
+                <div class="horizontal-container">
+                    <div class="panel">
+                        <h2>AIR MAX 1</h2>
+                        <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=800&q=80" alt="Shoe 1" class="panel-img" style="mix-blend-mode: lighten;">
+                    </div>
+                    <div class="panel">
+                        <h2>JORDAN XI</h2>
+                        <img src="https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=800&q=80" alt="Shoe 2" class="panel-img" style="mix-blend-mode: lighten;">
+                    </div>
+                    <div class="panel">
+                        <h2>DUNK LOW</h2>
+                        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80" alt="Shoe 3" class="panel-img" style="mix-blend-mode: lighten;">
+                    </div>
+                </div>
+            </section>
+
+            <section class="parallax-section">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" alt="Athlete" class="p-img p-img-1">
+                <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80" alt="Action Runner" class="p-img p-img-2">
+                <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80" alt="Detail" class="p-img p-img-3">
+                <h2 class="parallax-title">DEFEAT<br>GRAVITY</h2>
+            </section>
+
+            <section class="specs-section">
+                <div class="specs-header">
+                    <h3>LAB SPECIFICATIONS // AIR LAB</h3>
+                </div>
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <div class="spec-num" data-target="45">+0%</div>
+                        <div class="spec-label">Energy Return Cushioning</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-num" data-target="310">0g</div>
+                        <div class="spec-label">Ultra-Light Frame Weight</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-num" data-target="100">0%</div>
+                        <div class="spec-label">Recycled Flyknit Yarn</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="marquee-section">
+                <div class="marquee-track">
+                    <div class="marquee-item">JUST DO IT /// NIKE AIR /// BORN OF SPORT /// UNSTOPPABLE /// FLYKNIT TECH ///</div>
+                    <div class="marquee-item">JUST DO IT /// NIKE AIR /// BORN OF SPORT /// UNSTOPPABLE /// FLYKNIT TECH ///</div>
+                </div>
+            </div>
+
+            <section class="stack-section">
+                <div class="stack-card">
+                    <div class="stack-info">
+                        <h4>AERODYNAMIC DESIGN</h4>
+                        <p>Streamlined to slice through air resistance with zero drag.</p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=800&q=80" alt="Aerodynamic" class="stack-img">
+                </div>
+                <div class="stack-card">
+                    <div class="stack-info">
+                        <h4>RESPONSIVE SOLE</h4>
+                        <p>Dual-density foam units propel every step forward instantly.</p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Responsive Sole" class="stack-img">
+                </div>
+                <div class="stack-card">
+                    <div class="stack-info">
+                        <h4>CUSTOM FIT</h4>
+                        <p>Adapts dynamically to the movement of your foot for ultimate hold.</p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80" alt="Custom Fit" class="stack-img" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+                </div>
+            </section>
+
+            <!-- KINETIC SCROLL TEXT -->
+            <section class="kinetic-section">
+                <div class="kinetic-row left-move">
+                    <span>SPEED IS AN ILLUSION // SPEED IS AN ILLUSION // SPEED IS AN ILLUSION // SPEED IS AN ILLUSION</span>
+                </div>
+                <div class="kinetic-row right-move">
+                    <span>POWER IS ABSOLUTE // POWER IS ABSOLUTE // POWER IS ABSOLUTE // POWER IS ABSOLUTE</span>
+                </div>
+                <div class="kinetic-row left-move">
+                    <span>DOMINATE THE PITCH // DOMINATE THE PITCH // DOMINATE THE PITCH // DOMINATE THE PITCH</span>
+                </div>
+            </section>
+
+            <!-- HORIZONTAL ACCORDION -->
+            <section class="accordion-section">
+                <div class="accordion-container">
+                    <div class="acc-panel" style="background-image: url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80');">
+                        <div class="acc-text">SPEED</div>
+                    </div>
+                    <div class="acc-panel" style="background-image: url('https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=1000&q=80');">
+                        <div class="acc-text">POWER</div>
+                    </div>
+                    <div class="acc-panel" style="background-image: url('https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=1000&q=80');">
+                        <div class="acc-text">AGILITY</div>
+                    </div>
+                    <div class="acc-panel" style="background-image: url('https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=1000&q=80');">
+                        <div class="acc-text">CONTROL</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPLIT SCREEN LAB -->
+            <section class="split-section">
+                <div class="split-left">
+                    <h2>INNOVATION<br>LAB</h2>
+                    <p>Where raw performance meets precision engineering. Every material is tested, every aerodynamic curve is simulated. This is where the future of sport is constructed before it ever touches a stadium.</p>
+                </div>
+                <div class="split-right">
+                    <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=1000&q=80" class="split-img" alt="Nike Shoe 1">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" class="split-img" alt="Nike Shoe 2">
+                    <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=1000&q=80" class="split-img" alt="Nike Shoe 3">
+                </div>
+            </section>
+
+            <!-- =========================================
+                 NEW SLIDE 1: FLOATING PARALLAX SNEAKERS 
+                 ========================================= -->
+            <section class="floating-section">
+                <h2 class="floating-title">DEFY GRAVITY</h2>
+                <!-- 100% Certified Nike Shoes (Confirmed Working Links) -->
+                <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=1000&q=80" class="float-img f-img-1" alt="Floating Nike Shoe 1">
+                <img src="https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=1000&q=80" class="float-img f-img-2" alt="Floating Nike Shoe 2">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=1000&q=80" class="float-img f-img-3" alt="Floating Nike Shoe 3">
+            </section>
+
+            <!-- =========================================
+                 NEW SLIDE 2: HYPNOTIC SPIN SHOWCASE 
+                 ========================================= -->
+            <section class="circle-section">
+                <div class="circle-text-wrapper">
+                    <div class="circle-text-inner">
+                        UNSTOPPABLE <br> UNBREAKABLE <br> UNRIVALED <br> UNSTOPPABLE <br> UNBREAKABLE <br> UNRIVALED
+                    </div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=1000&q=80" class="circle-center-shoe" alt="Center Highlight Shoe">
+            </section>
+
+            <!-- =========================================
+                 NEW SLIDE 3: INFINITE TEXT MASK REVEAL
+                 ========================================= -->
+            <section class="mask-section">
+                <div class="mask-sticky">
+                    <h2 class="mask-text-wrapper">FUTURE</h2>
+                </div>
+            </section>
+
+            <!-- CYBER GLITCH TEXT -->
+            <section class="glitch-section">
+                <h2 class="glitch" data-text="UNSTOPPABLE">UNSTOPPABLE</h2>
+            </section>
+
+            <!-- INFINITE ZOOM TEXT -->
+            <section class="scale-section">
+                <div class="scale-sticky">
+                    <h2 class="scale-text">LIMITLESS</h2>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <section class="footer">
+                <div class="fill-text-container">
+                    JUST DO IT
+                    <div class="fill-text">JUST DO IT</div>
+                </div>
+                <div class="tiny-credit">made by SANKET MALVIYA, Prototype</div>
+            </section>
+        </div>
+    </div>
+
+    <!-- GSAP & Lenis Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <script>
+        // 1. Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const mouseGlow = document.querySelector('.mouse-glow');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            mouseGlow.style.left = e.clientX + 'px';
+            mouseGlow.style.top = e.clientY + 'px';
+        });
+
+        document.body.addEventListener('mouseenter', (e) => {
+            const t = e.target;
+            if(t.tagName === 'BUTTON' || t.classList?.contains('menu') || t.classList?.contains('logo') || t.classList?.contains('info-close-btn') || t.closest('a') || t.closest('.cat-item') || t.classList?.contains('split-img') || t.classList?.contains('acc-panel') || t.classList?.contains('circle-center-shoe')) {
+                cursor.style.width = '60px';
+                cursor.style.height = '60px';
+                if(t.closest('.category-overlay') && document.getElementById('catTitle').innerText.includes('INTER')) {
+                    cursor.style.backgroundColor = 'var(--inter-blue)';
+                    cursor.style.borderColor = 'var(--inter-blue)';
+                } else if(t.closest('.nike-info-overlay') || t.classList?.contains('info-close-btn')) {
+                    cursor.style.backgroundColor = 'var(--black)';
+                    cursor.style.borderColor = 'var(--black)';
+                } else {
+                    cursor.style.backgroundColor = 'var(--nike-volt)';
+                    cursor.style.borderColor = 'var(--nike-volt)';
+                }
+                cursor.style.mixBlendMode = 'difference';
+            }
+        }, true);
+
+        document.body.addEventListener('mouseleave', (e) => {
+            const t = e.target;
+            if(t.tagName === 'BUTTON' || t.classList?.contains('menu') || t.classList?.contains('logo') || t.classList?.contains('info-close-btn') || t.closest('a') || t.closest('.cat-item') || t.classList?.contains('split-img') || t.classList?.contains('acc-panel') || t.classList?.contains('circle-center-shoe')) {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+                cursor.style.backgroundColor = 'transparent';
+                cursor.style.borderColor = 'var(--nike-volt)';
+                cursor.style.mixBlendMode = 'normal';
+            }
+        }, true);
+
+        // 2. Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        // NIKE INFO OVERLAY LOGIC 
+        const logoBtn = document.querySelector('.logo');
+        const infoOverlay = document.querySelector('.nike-info-overlay');
+        const closeInfoBtn = document.querySelector('.info-close-btn');
+
+        logoBtn.addEventListener('click', () => {
+            infoOverlay.classList.add('active');
+            lenis.stop();
+            gsap.to(['.info-title', '.info-desc'], { 
+                y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power4.out", delay: 0.4 
+            });
+        });
+
+        closeInfoBtn.addEventListener('click', () => {
+            infoOverlay.classList.remove('active');
+            lenis.start();
+            gsap.to(['.info-title', '.info-desc'], { y: 50, opacity: 0, duration: 0.3 });
+        });
+
+        // CATEGORY DATA 
+        const categories = {
+            inter: {
+                title: "I M INTER 26/27", bgTitle: "NERAZZURRI", color: "var(--inter-blue)",
+                items: [
+                    { img: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80', filter: 'grayscale(100%) contrast(1.2) brightness(1.5)', pattern: 'repeating-linear-gradient(90deg, rgba(0,24,168,0.8) 0%, rgba(0,24,168,0.8) 15%, rgba(10,10,10,0.9) 15%, rgba(10,10,10,0.9) 30%)', blend: 'multiply', title: 'HOME KIT', desc: '26/27 MATCH SPEC JERSEY' },
+                    { img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', filter: 'grayscale(100%) brightness(1.1)', pattern: 'linear-gradient(135deg, rgba(0,24,168,0.1) 0%, rgba(0,24,168,0.0) 100%)', blend: 'multiply', title: 'AWAY KIT', desc: '26/27 STADIUM EDITION' },
+                    { img: 'https://images.unsplash.com/photo-1614632537423-1e6c2e7e0aab?auto=format&fit=crop&w=800&q=80', filter: 'contrast(1.2)', pattern: 'linear-gradient(45deg, rgba(198,255,0,0.1) 0%, rgba(0,0,0,0) 100%)', blend: 'screen', title: 'THIRD KIT', desc: '26/27 CHAMPIONS LEAGUE' }
+                ]
+            },
+            footwear: {
+                title: "NIKE FOOTWEAR", bgTitle: "SNEAKERS", color: "var(--nike-volt)",
+                items: [
+                    { img: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=800&q=80', filter: 'none', title: 'AIR MAX', desc: 'OG COLORWAY' },
+                    { img: 'https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=800&q=80', filter: 'none', title: 'JORDAN XI', desc: 'FLIGHT CLUB' },
+                    { img: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80', filter: 'none', title: 'DUNK LOW', desc: 'SKATE READY' }
+                ]
+            },
+            innovation: {
+                title: "FUTURE TECH", bgTitle: "INNOVATE", color: "var(--white)",
+                items: [
+                    { img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80', filter: 'grayscale(50%)', title: 'FLYKNIT 3.0', desc: 'ZERO WASTE YARN' },
+                    { img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80', filter: 'contrast(1.3)', title: 'ADAPT BB', desc: 'AUTO LACING' },
+                    { img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80', filter: 'none', title: 'ZOOM X', desc: 'ENERGY RETURN' }
+                ]
+            }
+        };
+
+        const menuBtn = document.querySelector('.menu');
+        const closeMenuBtn = document.querySelector('.menu-close-btn');
+        const menuOverlay = document.querySelector('.spicy-menu-overlay');
+        const menuPreview = document.getElementById('menuPreview');
+        const spicyLinks = document.querySelectorAll('.spicy-link');
+        
+        const categoryOverlay = document.querySelector('.category-overlay');
+        const closeCatBtn = document.querySelector('.cat-back');
+        const catTitle = document.getElementById('catTitle');
+        const catBgTitle = document.getElementById('catBgTitle');
+        const catGallery = document.getElementById('catGallery');
+
+        catGallery.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                catGallery.scrollBy({ left: e.deltaY * 2, behavior: 'smooth' });
+            }
+        });
+
+        spicyLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const imgUrl = link.getAttribute('data-img');
+                menuPreview.style.backgroundImage = `url(${imgUrl})`;
+            });
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('data-target');
+
+                if (target === 'home') {
+                    menuOverlay.classList.remove('active');
+                    lenis.start();
+                    gsap.to(window, {scrollTo: 0, duration: 1});
+                    gsap.to('.link-text', { y: "100%", duration: 0.2 });
+                } else {
+                    loadCategory(target);
+                }
+            });
+        });
+
+        menuBtn.addEventListener('click', () => {
+            menuOverlay.classList.add('active');
+            lenis.stop(); 
+            gsap.to('.link-text', { y: 0, duration: 0.8, stagger: 0.1, ease: "power4.out", delay: 0.3 });
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            menuOverlay.classList.remove('active');
+            lenis.start();
+            gsap.to('.link-text', { y: "100%", duration: 0.2 });
+        });
+
+        closeCatBtn.addEventListener('click', () => {
+            categoryOverlay.classList.remove('active');
+            gsap.to('.cat-item', { y: 50, opacity: 0, duration: 0.3 });
+        });
+
+        function loadCategory(key) {
+            const data = categories[key];
+            if(!data) return;
+
+            catTitle.innerText = data.title;
+            catTitle.style.color = data.color;
+            catBgTitle.innerText = data.bgTitle;
+
+            catGallery.innerHTML = '';
+            data.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'cat-item';
+                
+                const patternOverlay = item.pattern 
+                    ? `<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:${item.pattern}; mix-blend-mode:${item.blend || 'normal'}; z-index:1; pointer-events:none;"></div>`
+                    : '';
+
+                card.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}" style="filter: ${item.filter};" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+                    ${patternOverlay}
+                    <div class="cat-item-content">
+                        <h3>${item.title}</h3>
+                        <p style="color: ${data.color}">${item.desc}</p>
+                    </div>
+                `;
+                catGallery.appendChild(card);
+            });
+
+            categoryOverlay.classList.add('active');
+            gsap.to('.cat-item', { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power4.out", delay: 0.4 });
+        }
+
+        // =========================================================
+        // ORIGINAL + NEW GSAP SCROLL ANIMATIONS
+        // =========================================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        const heroTl = gsap.timeline({
+            scrollTrigger: { trigger: ".hero", start: "top top", end: "+=150%", pin: true, scrub: 1 }
+        });
+        heroTl.to(".left-text", { x: "-100%", opacity: 0, ease: "power2.inOut" }, 0)
+              .to(".right-text", { x: "100%", opacity: 0, ease: "power2.inOut" }, 0)
+              .to(".shoe-wrapper", { scale: 3, y: "50%", opacity: 0, ease: "power2.inOut" }, 0);
+
+        gsap.from(".reveal-up", {
+            scrollTrigger: { trigger: ".details", start: "top 60%" },
+            y: 100, opacity: 0, duration: 1, stagger: 0.2, ease: "power4.out"
+        });
+
+        const panels = gsap.utils.toArray(".panel");
+        gsap.to(panels, {
+            xPercent: -100 * (panels.length - 1), ease: "none",
+            scrollTrigger: { trigger: ".horizontal-wrapper", pin: true, scrub: 1, end: () => "+=" + document.querySelector(".horizontal-container").offsetWidth }
+        });
+
+        gsap.to(".p-img-1", { yPercent: -50, ease: "none", scrollTrigger: { trigger: ".parallax-section", scrub: 1 }});
+        gsap.to(".p-img-2", { yPercent: 30, ease: "none", scrollTrigger: { trigger: ".parallax-section", scrub: 1 }});
+        gsap.to(".p-img-3", { yPercent: -80, ease: "none", scrollTrigger: { trigger: ".parallax-section", scrub: 1 }});
+
+        ScrollTrigger.create({
+            trigger: ".specs-section", start: "top 70%",
+            onEnter: () => {
+                document.querySelectorAll('.spec-num').forEach(numEl => {
+                    const target = parseInt(numEl.getAttribute('data-target'));
+                    const isGram = numEl.textContent.includes('g');
+                    const isPercent = numEl.textContent.includes('%');
+                    const isPlus = numEl.textContent.includes('+');
+
+                    gsap.to({ val: 0 }, {
+                        val: target, duration: 2, ease: "power3.out",
+                        onUpdate: function() {
+                            let value = Math.floor(this.targets()[0].val);
+                            if (isPlus) numEl.textContent = `+${value}%`;
+                            else if (isGram) numEl.textContent = `${value}g`;
+                            else if (isPercent) numEl.textContent = `${value}%`;
+                        }
+                    });
+                });
+            }
+        });
+
+        // Kinetic Typography Scroll Binding
+        gsap.to(".left-move", { xPercent: -20, ease: "none", scrollTrigger: { trigger: ".kinetic-section", scrub: 1 }});
+        gsap.to(".right-move", { xPercent: 20, ease: "none", scrollTrigger: { trigger: ".kinetic-section", scrub: 1 }});
+
+        // =========================================================
+        // NEW ANIMATIONS FOR NEW SECTIONS
+        // =========================================================
+
+        // 1. Floating Shoes Scroll Effect
+        gsap.to(".f-img-1", { y: -300, rotation: 5, scrollTrigger: { trigger: ".floating-section", scrub: 1 }});
+        gsap.to(".f-img-2", { y: -450, rotation: -10, scrollTrigger: { trigger: ".floating-section", scrub: 1 }});
+        gsap.to(".f-img-3", { y: -200, rotation: 0, scrollTrigger: { trigger: ".floating-section", scrub: 1 }});
+
+        // 2. Infinite Mask Reveal Scroll Trigger
+        gsap.to(".mask-text-wrapper", {
+            scale: 50,
+            ease: "power2.inOut",
+            scrollTrigger: {
+                trigger: ".mask-section",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+
+        // Scale Animation for LIMITLESS Section
+        gsap.to(".scale-text", {
+            scale: 60,
+            opacity: 0,
+            ease: "power2.in",
+            scrollTrigger: {
+                trigger: ".scale-section",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+        gsap.to(".fill-text", {
+            width: "100%", ease: "none",
+            scrollTrigger: { trigger: ".footer", start: "top 80%", end: "center center", scrub: 1 }
+        });
+    </script>
+</body>
+</html>
